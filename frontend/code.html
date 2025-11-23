@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>TinyLink — Stats</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Link Stats</h1>
+      <a href="/" class="small">Dashboard</a>
+    </div>
+
+    <div class="card" id="statsCard">
+      <div id="loading">Loading…</div>
+      <div id="content" style="display:none;">
+        <p><strong>Code:</strong> <span id="s_code"></span></p>
+        <p><strong>Target:</strong> <a id="s_target" href="#" target="_blank"></a></p>
+        <p><strong>Total clicks:</strong> <span id="s_clicks"></span></p>
+        <p><strong>Last clicked:</strong> <span id="s_last"></span></p>
+        <p><strong>Created:</strong> <span id="s_created"></span></p>
+        <div style="margin-top:12px;">
+          <a id="openLink" class="btn" target="_blank">Open link</a>
+          <a href="/" style="margin-left:8px;" class="copy-btn">Back</a>
+        </div>
+      </div>
+      <div id="notFound" style="display:none;" class="empty">Link not found.</div>
+    </div>
+  </div>
+
+  <script>
+    const pathParts = window.location.pathname.split('/');
+    const code = pathParts[2];
+    async function load() {
+      try {
+        const res = await fetch(`/api/links/${encodeURIComponent(code)}`);
+        if (res.status === 404) {
+          document.getElementById('loading').style.display='none';
+          document.getElementById('notFound').style.display='block';
+          return;
+        }
+        const data = await res.json();
+        document.getElementById('s_code').textContent = data.code;
+        const targetEl = document.getElementById('s_target');
+        targetEl.textContent = data.target;
+        targetEl.href = data.target;
+        document.getElementById('s_clicks').textContent = data.clicks;
+        document.getElementById('s_last').textContent = data.last_clicked || 'Never';
+        document.getElementById('s_created').textContent = data.created_at;
+        document.getElementById('openLink').href = `/${data.code}`;
+        document.getElementById('loading').style.display='none';
+        document.getElementById('content').style.display='block';
+      } catch (e) {
+        console.error(e);
+        document.getElementById('loading').textContent = 'Failed to load';
+      }
+    }
+    load();
+  </script>
+</body>
+</html>

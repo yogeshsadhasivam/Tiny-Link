@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>TinyLink — Dashboard</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>TinyLink</h1>
+      <div class="small">No auth — public demo</div>
+    </div>
+
+    <div class="card">
+      <form id="createForm">
+        <div class="form-row">
+          <input id="target" type="url" placeholder="https://example.com/very/long/url" required />
+          <input id="code" class="short" type="text" placeholder="custom code (optional)" />
+          <button id="addBtn" class="btn" type="submit">Add Link</button>
+        </div>
+        <div id="formMsg" class="small" style="height:18px;"></div>
+      </form>
+
+      <div class="search">
+        <input id="filterInput" type="text" placeholder="Search by code or URL" />
+        <button id="refreshBtn" class="copy-btn">Refresh</button>
+      </div>
+
+      <div id="linksArea">
+        <table class="table" id="linksTable">
+          <thead>
+            <tr>
+              <th>Short code</th>
+              <th>Target URL</th>
+              <th>Total clicks</th>
+              <th>Last clicked</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="linksTbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
